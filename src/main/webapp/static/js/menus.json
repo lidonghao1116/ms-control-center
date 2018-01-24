@@ -1,0 +1,130 @@
+[
+{
+  "id": "2",
+  "text": "分校管理",
+  "icon": "",
+  "url": "",
+  "menus": [{
+	  "id": "21",
+	  "text": "学校管理",
+	  "icon": "menu-icon fa fa-pie-chart",
+	  "url": "",
+	  "menus": [{
+	    "id": "211",
+		"text": "学校列表",
+		"icon": "",
+		"url": "/schools/list",
+		"target":"mainFrame"
+	  }]
+	},{
+	  "id": "22",
+	  "text": "培训管理",
+	  "icon": "menu-icon fa fa-briefcase",
+	  "url": "",
+	  "menus": [{
+	    "id": "221",
+		"text": "培训订单列表",
+		"icon": "",
+		"url": "/applyOrder/list",
+		"target":"mainFrame"
+	  }]
+	},{
+	  "id": "23",
+	  "text": "课程管理",
+	  "icon": "menu-icon fa fa-cog",
+	  "url": "",
+	  "menus": [{
+	    "id": "231",
+		"text": "课程列表",
+		"icon": "",
+		"url": "/schoolCourse/list",
+		"target":"mainFrame"
+	  }]
+	  },{
+	  "id": "24",
+	  "text": "发证机构管理",
+	  "icon": "menu-icon fa fa-desktop",
+	  "url": "",
+	  "menus": [{
+	    "id": "241",
+		"text": "发证机构列表",
+		"icon": "",
+		"url": "/certAuthority/list",
+		"target":"mainFrame"
+	  }]
+	  },{
+	  "id": "25",
+	  "text": "证书管理",
+	  "icon": "menu-icon fa fa-cog",
+	  "url": "",
+	  "menus": [{
+	    "id": "251",
+		"text": "证书列表",
+		"icon": "",
+		"url": "/certificate/list",
+		"target":"mainFrame"
+	  }]
+	}]
+},{
+  "id": "3",
+  "text": "在线学堂",
+  "icon": "",
+  "url": "",
+  "menus": [{
+	  "id": "31",
+	  "text": "在线课程",
+	  "icon": "menu-icon fa fa-users",
+	  "url": "",
+	  "menus": [{
+	    "id": "311",
+		"text": "课程管理",
+		"icon": "",
+		"url": "/course/list",
+		"target":"mainFrame"
+	  },
+	  {
+	    "id": "312",
+		"text": "题库管理",
+		"icon": "",
+		"url": "/question/list",
+		"target":"mainFrame"
+	  }]
+	},{
+	  "id": "32",
+	  "text": "订单管理",
+	  "icon": "menu-icon fa fa-briefcase",
+	  "url": "",
+	  "menus": [{
+	    "id": "321",
+		"text": "订单记录",
+		"icon": "",
+		"url": "/order/list",
+		"target":"mainFrame"
+	  },{
+	   "id": "322",
+		"text": "学习记录",
+		"icon": "",
+		"url": "/learnRecords/list",
+		"target":"mainFrame"
+	  },{
+	   "id": "323",
+		"text": "红包清算",
+		"icon": "",
+		"url": "/redPacket/list",
+		"target":"mainFrame"
+	  }]
+	},{
+	  "id": "33",
+	  "text": "用户管理",
+	  "icon": "menu-icon fa fa-cog",
+	  "url": "",
+	  "menus": [{
+	    "id": "331",
+		"text": "用户列表",
+		"icon": "",
+		"url": "/user/list",
+		"target":"mainFrame"
+	  }]
+	}]
+}
+]

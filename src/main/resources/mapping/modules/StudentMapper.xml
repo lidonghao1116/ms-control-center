@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiacer.modules.mybatis.dao.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.jiacer.modules.mybatis.entity.StudentInfo" >
+    <result column="source_value" property="sourceValue" jdbcType="VARCHAR" />
+    <result column="source_type_sec" property="sourceTypeSec" jdbcType="VARCHAR" />
+    <result column="source_value_text" property="sourceValueText" jdbcType="VARCHAR" />
+    <result column="source_type_sec_text" property="sourceTypeSecText" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      source_value,
+      source_type_sec,
+      ifnull(p.partner_name,source_value) as source_value_text,
+      c.text as source_type_sec_text
+    from
+      stu_user_info s
+      left join cfg_param c on s.source_type_sec=c.value and c.type=5 and FK_PARENT_PARAM_ID=46
+      left join partners p on s.source_value=p.id
+    where
+      s.id = #{studentId}
+  </select>
+
+
+</mapper>

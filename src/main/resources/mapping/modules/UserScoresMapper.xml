@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiacer.modules.mybatis.dao.UserScoresMapper">
+  <resultMap id="BaseResultMap" type="com.jiacer.modules.mybatis.entity.UserScoresEntity">
+    <id column="class_id" jdbcType="INTEGER" property="classId" />
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="order_no" jdbcType="DECIMAL" property="orderNo" />
+    <result column="theory_scores" jdbcType="DECIMAL" property="theoryScores" />
+    <result column="po_scores" jdbcType="DECIMAL" property="poScores" />
+    <result column="exam_result" jdbcType="VARCHAR" property="examResult" />
+    <result column="deal_result" jdbcType="VARCHAR" property="dealResult" />
+    <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo" />
+    <result column="makeup_exam_free" jdbcType="DECIMAL" property="makeupExamFree" />
+    <result column="comprehensive_scores" jdbcType="VARCHAR" property="comprehensiveScores" />
+    <result column="ability_scores" jdbcType="VARCHAR" property="abilityScores" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    class_id, user_id, order_no, theory_scores, po_scores, exam_result, deal_result, 
+    certificate_no, makeup_exam_free,comprehensive_scores,ability_scores
+  </sql>
+  <select id="getByKey" parameterType="com.jiacer.modules.mybatis.model.UserScoresKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_scores
+    where class_id = #{classId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+
+  <insert id="insert" parameterType="com.jiacer.modules.mybatis.entity.UserScoresEntity">
+    insert into user_scores
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="theoryScores != null">
+        theory_scores,
+      </if>
+      <if test="poScores != null">
+        po_scores,
+      </if>
+      <if test="examResult != null">
+        exam_result,
+      </if>
+      <if test="dealResult != null">
+        deal_result,
+      </if>
+      <if test="certificateNo != null">
+        certificate_no,
+      </if>
+      <if test="makeupExamFree != null">
+        makeup_exam_free,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=DECIMAL},
+      </if>
+      <if test="theoryScores != null">
+        #{theoryScores,jdbcType=DECIMAL},
+      </if>
+      <if test="poScores != null">
+        #{poScores,jdbcType=DECIMAL},
+      </if>
+      <if test="examResult != null">
+        #{examResult,jdbcType=VARCHAR},
+      </if>
+      <if test="dealResult != null">
+        #{dealResult,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateNo != null">
+        #{certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="makeupExamFree != null">
+        #{makeupExamFree,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.jiacer.modules.mybatis.entity.UserScoresEntity">
+    update user_scores
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=DECIMAL},
+      </if>
+      <if test="theoryScores != null">
+        theory_scores = #{theoryScores,jdbcType=DECIMAL},
+      </if>
+      <if test="poScores != null">
+        po_scores = #{poScores,jdbcType=DECIMAL},
+      </if>
+      <if test="examResult != null">
+        exam_result = #{examResult,jdbcType=VARCHAR},
+      </if>
+      <if test="dealResult != null">
+        deal_result = #{dealResult,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateNo != null">
+        certificate_no = #{certificateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="makeupExamFree != null">
+        makeup_exam_free = #{makeupExamFree,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+      and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="count" parameterType="map" resultType="int">
+  	select 
+    count(0)
+      from user_scores a
+      left join exam_class b on a.class_id = b.id
+      left join learn_types c on b.learn_types_id = c.id
+      left join institution_info d on c.institution_info_id = d.id
+      left join user_base_info m on a.user_id = m.id
+      left join user_extend_info n on a.user_id = n.user_id
+      <where>
+          and a.exam_result in ('01','04','05')
+    	 <if test="handleStatus != null and handleStatus != ''">
+    		and  a.handle_status = #{handleStatus,jdbcType=VARCHAR}
+    	</if>
+    	<if test="courseId != null">
+        	and b.learn_types_id = #{courseId,jdbcType=INTEGER}
+      	</if>
+      	<if test="schoolId != null">
+        	and b.institution_info_id = #{schoolId,jdbcType=INTEGER}
+      	</if>
+    	<if test="startDate !=null and startDate !=''">
+    		and a.issuing_date &gt;= #{startDate,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endDate !=null and endDate !=''">
+	    	and a.issuing_date &lt;= #{endDate,jdbcType=TIMESTAMP}
+	    </if>
+    	<if test="moblie !=null and moblie !=''">
+    		and m.mobile like #{moblie,jdbcType=VARCHAR}
+	    </if>
+	    <if test="userName !=null and userName !=''">
+    		and n.user_name like #{userName,jdbcType=VARCHAR}
+	    </if>
+    	</where>
+      order by issuing_date desc
+      <if test="offset !=null">
+          limit #{offset},#{pageSize}
+      </if>
+  </select>
+  
+  <select id="getPageList" parameterType="map" resultType="java.util.Map">
+  	select 
+    	 	a.class_id "classId",
+			a.user_id "userId",
+			a.order_no "orderNo",
+			a.theory_scores "theoryScores",
+			a.po_scores "poScores",
+			a.exam_result "examResult",
+			a.deal_result "dealResult",
+			a.certificate_no "certificateNo",
+			a.makeup_exam_free "makeupExamFree",
+    	 	b.learn_types_id "courseId",
+			c.type_name "courseName",
+			c.authenticate_grade "authenticateGrade",
+			d.school_name "schoolName",
+			d.id "schoolId",
+			n.user_name "userName",
+            a.issuing_date "issuingDate",
+			m.mobile "mobile"
+   from user_scores a
+       left join exam_class b on a.class_id = b.id
+       left join learn_types c on b.learn_types_id = c.id
+       left join institution_info d on c.institution_info_id = d.id
+       left join user_base_info m on a.user_id = m.id
+       left join user_extend_info n on a.user_id = n.user_id
+   <where>
+             and a.exam_result in ('01','04','05')
+    	<if test="courseId != null">
+        	and b.learn_types_id = #{courseId,jdbcType=INTEGER}
+      	</if>
+      	<if test="schoolId != null">
+        	and b.institution_info_id = #{schoolId,jdbcType=INTEGER}
+      	</if>
+    	<if test="startDate !=null and startDate !=''">
+    		and a.issuing_date &gt;= #{startDate,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="endDate !=null and endDate !=''">
+	    	and a.issuing_date &lt;= #{endDate,jdbcType=TIMESTAMP}
+	    </if>
+    	<if test="moblie !=null and moblie !=''">
+    		and m.mobile like #{moblie,jdbcType=VARCHAR}
+	    </if>
+	    <if test="userName !=null and userName !=''">
+    		and n.user_name like #{userName,jdbcType=VARCHAR}
+	    </if>
+    	</where>
+      order by issuing_date desc
+
+      <if test="offset !=null">
+          limit #{offset},#{pageSize}
+      </if>
+  </select>
+
+
+
+
+
+    <resultMap id="certMap" type="com.jiacer.modules.mybatis.entity.UserCertEntity">
+        <result column="work_type" jdbcType="VARCHAR" property="workType" />
+        <result column="authenticate_grade" jdbcType="VARCHAR" property="authenticateGrade"/>
+        <result column="theory_scores" jdbcType="VARCHAR" property="theoryScores"/>
+        <result column="po_scores" jdbcType="VARCHAR" property="poScores"/>
+        <result column="comprehensive_scores" jdbcType="VARCHAR" property="comprehensiveScores"/>
+        <result column="ability_scores" jdbcType="VARCHAR" property="abilityScores"/>
+        <result column="issuing_date" jdbcType="TIMESTAMP" javaType="java.util.Date" property="issuingDate"/>
+        <result column="deal_result" jdbcType="VARCHAR" property="dealResult"/>
+        <result column="exam_result" jdbcType="VARCHAR" property="examResult"/>
+        <result column="certificate_no" jdbcType="VARCHAR" property="certificateNo"/>
+        <result column="cert_authority_id" jdbcType="VARCHAR" property="certAuthorityId"/>
+        <result column="cert_org_name" jdbcType="VARCHAR" property="certOrgName" />
+        <result column="cert_name" jdbcType="VARCHAR" property="certName" />
+        <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+        <result column="exam_result_text" jdbcType="VARCHAR" property="examResultText"/>
+    </resultMap>
+  
+  <select id="getCertInfoByUserAndClass" parameterType="com.jiacer.modules.mybatis.model.UserScoresKey" resultMap="certMap">
+      select
+      type_of_work  as work_type,
+      cert_name as cert_name,
+      us.authenticate_grade,
+      us.theory_scores,
+      us.po_scores,
+      us.comprehensive_scores,
+      us.ability_scores,
+      us.deal_result,
+      us.issuing_date,
+      us.certificate_no,
+      us.cert_authority_id,
+      us.exam_result,
+      ca.authority_name as cert_org_name,
+      (select cp.`text` from cfg_param cp where us.authenticate_grade=cp.VALUE and cp.type=25) as grade_name,
+      (select cp.`text` from cfg_param cp where us.exam_result=cp.VALUE and cp.type=12) as exam_result_text
+      from
+      user_scores us left join cert_authority ca on us.cert_authority_id = ca.authority_id
+      where
+      us.class_id = #{classId} and us.user_id=#{userId} order by us.issuing_date desc
+  </select>
+  
+  
+  
+  
+</mapper>

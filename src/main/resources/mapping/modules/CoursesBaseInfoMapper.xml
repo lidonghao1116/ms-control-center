@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiacer.modules.mybatis.dao.CoursesBaseInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jiacer.modules.mybatis.entity.CourseBaseInfoEntity" >
+    <id column="course_id" property="courseId" jdbcType="INTEGER" />
+    <id column="authority_id" property="authorityId" jdbcType="INTEGER" />
+    <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+    <result column="sort_no" property="sortNo" jdbcType="INTEGER" />
+    <result column="is_usable" property="isUsable" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="total_hours" property="totalHours" jdbcType="INTEGER"/>
+    <result column="exam_type" property="examType" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="authenticate_grade" property="authenticateGrade" jdbcType="VARCHAR"/>
+    <result column="cert_name" property="certName" jdbcType="VARCHAR"/>
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="add_account" property="addAccount" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_account" property="modifyAccount" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_sql">
+  	course_id, authority_id, course_name, sort_no, is_usable, status, total_hours, 
+  	exam_type, remarks, authenticate_grade,cert_name, add_time, add_account, modify_time,modify_account
+  </sql>
+  
+  <select id="getCourseInfo" resultMap="BaseResultMap">
+	SELECT
+		<include refid="Base_Column_sql"/>
+	FROM
+		course_base_info
+	WHERE 
+	    is_usable =1
+  </select>
+  
+  <select id="getCourseBaseInfoCount" parameterType="map" resultType="java.lang.Integer">
+  	SELECT count(0) 
+  	FROM course_base_info
+  	<where>
+    	<if test="courseName != null">
+    		course_name = #{courseName,jdbcType=VARCHAR}
+    	</if>
+    	<if test="authenticateGrade != null  and authenticateGrade != ''">
+    		and authenticate_grade = #{authenticateGrade,jdbcType=INTEGER}
+    	</if>
+    	<if test="status != null and status != ''">
+    		and status = #{status,jdbcType=VARCHAR}
+    	</if>
+    	<if test="authorityId != null">
+    		and authority_id = #{authorityId,jdbcType=INTEGER}
+    	</if>
+    	   and  is_usable =1
+    </where>
+  </select>
+  
+  <select id="getCoursesBaseInfoPageList" parameterType="map" resultMap="BaseResultMap">
+  	SELECT 
+  		<include refid="Base_Column_sql" />
+  	FROM
+  		course_base_info
+	<where>
+    	<if test="courseName != null">
+    		course_name = #{courseName,jdbcType=VARCHAR}
+    	</if>
+    	<if test="status != null and status != ''">
+    		and status = #{status,jdbcType=VARCHAR}
+    	</if>
+    	<if test="authenticateGrade != null and authenticateGrade != ''">
+    		and authenticate_grade = #{authenticateGrade,jdbcType=VARCHAR}
+    	</if>
+    	<if test="authorityId != null">
+    		and authority_id = #{authorityId,jdbcType=INTEGER}
+    	</if>
+    	   and  is_usable =1
+    </where>
+     order by add_time desc
+    limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="getCourseBaseInfoByParams" parameterType="com.jiacer.modules.business.bean.form.CourseBaseInfoForm" resultMap="BaseResultMap">
+  	SELECT
+  		a.course_name
+	FROM 
+		course_base_info a ,
+		cert_authority c
+	WHERE 
+		a.authority_id=c.authority_id
+	AND
+		a.course_name=#{courseName,jdbcType=VARCHAR}
+	AND
+		a.authenticate_grade=#{authenticateGrade,jdbcType=VARCHAR}
+	AND
+		a.cert_name=#{certName,jdbcType=VARCHAR}
+	AND
+		c.authority_id=#{authorityId,jdbcType=INTEGER}
+	AND a.is_usable =1
+  </select>
+  
+  <insert id="addCourseBaseInfoByEntityForm" parameterType="com.jiacer.modules.mybatis.model.CourseBaseInfo"
+  			keyProperty="courseId"  useGeneratedKeys="true">
+  
+  	INSERT INTO 
+		course_base_info
+		(authority_id, course_name,status, total_hours, exam_type, remarks, authenticate_grade,cert_name, add_time, add_account)
+	VALUES
+		(#{authorityId,jdbcType=INTEGER},#{courseName,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{totalHours,jdbcType=INTEGER},
+		 #{examType,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{authenticateGrade,jdbcType=VARCHAR},#{certName,jdbcType=VARCHAR},now(),#{addAccount})
+  </insert>
+  
+  <update id="updaeCourseBaseInfo" parameterType="com.jiacer.modules.mybatis.entity.CourseBaseInfoEntity">
+  	UPDATE
+  		course_base_info
+  	<set>
+      <if test="totalHours != null">
+        total_hours = #{totalHours,jdbcType=VARCHAR},
+      </if>
+      <if test="examType != null">
+		exam_type = #{examType,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null"> 
+		remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+      	status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyAccount != null">
+        modify_account = #{modifyAccount,jdbcType=VARCHAR},
+      </if>
+  	</set>
+  	WHERE course_id = #{courseId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getCourseBaseInfoById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	
+  	SELECT
+  	   <include refid="Base_Column_sql"/>
+  	FROM
+  	   course_base_info
+  	WHERE
+  	course_id= #{courseId,jdbcType=INTEGER}
+  </select>
+</mapper>

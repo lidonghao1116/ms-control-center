@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry location="D:\WORK\mysql-connector-java-5.1.6.jar" />
+	<context id="context1">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://139.224.49.192:3306/jiacerdb" userId="root"
+			password="Jclm@88" />
+		<javaModelGenerator targetPackage="com.jiacer.modules.mybatis.model"
+			targetProject="jiacerconsole\src\main\java">
+			<!-- <javaModelGenerator targetPackage="com.sinosoft.core.db.model" targetProject="sinosoft\src\main\java" 
+				> -->
+			<property name="enableSubPackages" value="false" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="mapping"
+			targetProject="jiacerconsole\src\main\resources">
+			<!-- <sqlMapGenerator targetPackage="ibatis.sinosoft.core.db.mapper" targetProject="sinosoft\src\main\resources" 
+				> -->
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+		<javaClientGenerator targetPackage="com.jiacer.modules.mybatis.dao"
+			targetProject="jiacerconsole\src\main\java" type="XMLMAPPER">
+			<!-- <javaClientGenerator targetPackage="com.sinosoft.core.db.mapper" 
+				targetProject="sinosoft\src\main\java" type="XMLMAPPER" > -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- <table tableName="T_PD_WEALTH" domainObjectName="PDWealth"></table> -->
+
+
+			<!--  <table tableName="course_info" domainObjectName="CourseInfo"></table> 课程信息表 -->
+			 <!-- <table tableName="cert_authority" domainObjectName="CertAuthority"></table> -->
+			<!--  <table tableName="template_info" domainObjectName="TemplateInfo"></table> 课程答题模板表 -->
+			<!-- <table tableName="red_packet" domainObjectName="RedPacket"></table>订单表 -->
+			<table tableName="schools" domainObjectName="Schools"></table><!-- 优化school表 @zsq -->
+	</context>
+</generatorConfiguration>
